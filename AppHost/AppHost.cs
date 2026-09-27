@@ -4,12 +4,13 @@ var builder = DistributedApplication.CreateBuilder(args);
 
 var postgres = builder
     .AddPostgres("postgres")
+    .WithHostPort(5432)
     .WithDataVolume()
     .WithPgAdmin(p => p.WithHostPort(5050));
-postgres.AddDatabase("AspnetcoreIdentityDemo");
+var database = postgres.AddDatabase("AspnetcoreIdentityDemo");
 
 _ = builder
     .AddProject<Api>("api")
-    .WithReference(postgres);
+    .WithReference(database);
 
 builder.Build().Run();
